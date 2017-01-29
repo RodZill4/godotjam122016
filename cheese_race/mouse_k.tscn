@@ -1,0 +1,417 @@
+[gd_scene load_steps=12 format=1]
+
+[ext_resource path="res://gfx/mouse/belly.png" type="Texture" id=1]
+[ext_resource path="res://mouse_head.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gfx/mouse/leg.png" type="Texture" id=3]
+[ext_resource path="res://gfx/mouse/arm.png" type="Texture" id=4]
+
+[sub_resource type="CapsuleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 8.54837
+height = 64.0424
+
+[sub_resource type="GDScript" id=2]
+
+resource/name = "mouse"
+script/source = "extends KinematicBody2D\n\nonready var global = get_node(\"/root/global\")\nonready var ray_down1 = get_node(\"RayCast2D1\")\nonready var ray_down2 = get_node(\"RayCast2D2\")\nonready var ray_front1 = get_node(\"Gfx/RayCast2D1\")\nonready var ray_front2 = get_node(\"Gfx/RayCast2D2\")\nonready var head = get_node(\"Gfx/Body/Head\")\nonready var gfx = get_node(\"Gfx\")\nonready var zzz = get_node(\"Gfx/Body/Head/Zzz\")\nonready var camera = get_node(\"Camera\")\nonready var animation_player = get_node(\"Gfx/AnimationPlayer\")\nvar state = STATE_ALIVE\nvar face_left = false\nvar speed = Vector2(0, 0)\nvar current_speed = 200\nvar jumping = false\nvar jumping_speed = 0\nvar jump_start_time = 0\nvar energy = 50\nvar normal = Vector2(0, 0)\n\nconst ENERGY_PER_METER = 0.02\n\nconst STATE_ALIVE   = 0\nconst STATE_STARVED = 1\nconst STATE_DEAD    = 2\nconst STATE_WON     = 3\n\nfunc _ready():\n\tif get_parent().is_type(\"VisibilityNotifier2D\"):\n\t\tvar camera = get_node(\"Camera\")\n\t\tvar rect = get_parent().get_rect()\n\t\tcamera.set_limit(0, rect.pos.x)\n\t\tcamera.set_limit(1, rect.pos.y)\n\t\tcamera.set_limit(2, rect.end.x)\n\t\tcamera.set_limit(3, rect.end.y)\n\tray_down1.add_exception(self)\n\tray_down2.add_exception(self)\n\tray_front1.add_exception(self)\n\tray_front2.add_exception(self)\n\nfunc start():\n\tset_fixed_process(true)\n\tset_process_unhandled_input(true)\n\tanimation_player.play(\"run\")\n\nfunc win():\n\tif state == STATE_ALIVE:\n\t\tstate = STATE_WON\n\t\tset_process_unhandled_input(false)\n\t\tcurrent_speed = 0\n\t\tif jumping_speed > 0:\n\t\t\tjumping_speed = 0\n\t\tanimation_player.set_speed(1)\n\t\tanimation_player.play(\"win\", -1, 1)\n\t\tglobal.play_music(\"win\")\n\nfunc _draw():\n\tdraw_line(Vector2(0, 0), speed, Color(0, 0, 1, 1))\n\tdraw_line(Vector2(0, 0), Vector2(0, 100), Color(1, 0, 0, 1))\n\tdraw_line(Vector2(0, 0), speed - Vector2(0, jumping_speed), Color(1, 1, 1, 1))\n\nfunc _unhandled_input(event):\n\tif event.is_action_pressed(\"jump\"):\n\t\tjump_start_time = OS.get_ticks_msec()\n\telif event.is_action_released(\"jump\"):\n\t\tif ray_down1.is_colliding() || ray_down2.is_colliding():\n\t\t\tjumping_speed = min(600, 400 + 0.5 * (OS.get_ticks_msec() - jump_start_time))\n\telif event.is_action_pressed(\"turn\"):\n\t\tface_left = !face_left\n\nfunc set_energy(e):\n\tenergy = e\n\tif energy < 0:\n\t\tenergy = 0\n\telif energy > 100:\n\t\tenergy = 100\n\tget_tree().call_group(0, \"mouse_energy\", \"set_value\", energy)\n\nfunc eat_cheese():\n\tset_energy(energy + 25)\n\treturn true\n\nfunc _fixed_process(delta):\n\tvar target_speed = 0\n\tif state == STATE_ALIVE:\n\t\ttarget_speed = 4 * energy + 300\n\t\tglobal.set_music_speed(energy)\n\t\tif energy <= 0:\n\t\t\tstate = STATE_STARVED\n\t\t\tspeed = Vector2(0, 0)\n\t\t\tanimation_player.set_speed(1)\n\t\t\tanimation_player.play(\"sleep\", -1, 1)\n\t\t\tglobal.play_music(\"sleep\")\n\t\tif ray_front1.is_colliding() || ray_front2.is_colliding():\n\t\t\tstate = STATE_DEAD\n\t\t\tspeed = Vector2(-speed.x, speed.y)\n\t\t\tanimation_player.set_speed(1)\n\t\t\tanimation_player.play(\"die\", -1, 1)\n\t\t\tglobal.play_music(\"death\")\n\tif face_left:\n\t\ttarget_speed = -target_speed\n\tif state != STATE_ALIVE:\n\t\tspeed *= 1-delta\n\t\tjumping_speed = jumping_speed - delta * 1000\n\telif ray_down1.is_colliding() || ray_down2.is_colliding():\n\t\tvar ray_down\n\t\thead.show()\n\t\tif ray_down1.is_colliding():\n\t\t\tray_down = ray_down1\n\t\telse:\n\t\t\tray_down = ray_down2\n\t\tnormal = ray_down.get_collision_normal().normalized()\n\t\tvar angle = normal.angle()\n\t\tset_rot(angle-PI)\n\t\tcurrent_speed = lerp(current_speed, target_speed, delta)\n\t\tanimation_player.set_speed(current_speed/100)\n\t\tif (current_speed > 0):\n\t\t\tspeed = current_speed * normal.rotated(-0.5*PI + 0.1)\n\t\telse:\n\t\t\tspeed = -current_speed * normal.rotated(0.5*PI - 0.1)\n\t\tcamera.set_offset(Vector2(speed.x * 0.5, -100))\n\t\tif current_speed > 0:\n\t\t\tgfx.set_scale(Vector2(0.1, 0.1))\n\t\t\tzzz.set_scale(Vector2(-1, 1))\n\t\telse:\n\t\t\tgfx.set_scale(Vector2(-0.1, 0.1))\n\t\t\tzzz.set_scale(Vector2(1, 1))\n\t\tif jumping:\n\t\t\tjumping = false\n\t\t\tjumping_speed = 0\n\t\telif 0:\n\t\t\tvar ground_distance = ray_down.get_collision_point() - get_pos()\n\t\t\tvar ground_distance_length = ground_distance.length()\n\t\t\tground_distance *= 500 / energy * (ground_distance_length - 5) / ground_distance_length\n\t\t\tspeed = speed + ground_distance\n\telse:\n\t\thead.hide()\n\t\tjumping = true\n\t\tset_rot(lerp(get_rot(), 0, delta))\n\tvar old_pos = get_pos()\n\tif move(delta * (speed - Vector2(0, jumping_speed))) != Vector2(0, 0):\n\t\tjumping_speed = 0\n\tupdate()\n\tif state == STATE_ALIVE:\n\t\tset_energy(energy - ENERGY_PER_METER * abs(get_pos().x - old_pos.x))\n\nfunc show_menu():\n\tget_tree().call_group(0, \"game\", \"show_pause_menu\")"
+
+[sub_resource type="Animation" id=3]
+
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:transform/pos")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 30.843, -350.37 ), Vector2( 44.0191, -142.187 ) ] }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body:transform/rot")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, -98.905 ] }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/Leg1:transform/rot")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 22.3566, 9.05675 ] }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/Leg2:transform/rot")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.5348, -12.7753 ] }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Body/Head:transform/rot")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, -102.092 ] }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Body/Arm1:transform/rot")
+tracks/5/interp = 1
+tracks/5/imported = false
+tracks/5/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.0934, -5.59377 ] }
+tracks/6/type = "value"
+tracks/6/path = NodePath("Body/Arm2:transform/rot")
+tracks/6/interp = 1
+tracks/6/imported = false
+tracks/6/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 12.6547, 24.9056 ] }
+tracks/7/type = "method"
+tracks/7/path = NodePath("Body/Head/AnimationPlayer")
+tracks/7/interp = 1
+tracks/7/imported = false
+tracks/7/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "values":[ { "args":[ "die" ], "method":"play" }, { "args":[ "stars" ], "method":"play" } ] }
+tracks/8/type = "value"
+tracks/8/path = NodePath("../Camera:zoom")
+tracks/8/interp = 1
+tracks/8/imported = false
+tracks/8/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ] }
+tracks/9/type = "value"
+tracks/9/path = NodePath("../Camera:offset")
+tracks/9/interp = 1
+tracks/9/imported = false
+tracks/9/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 0, -100 ), Vector2( 0, -80 ) ] }
+tracks/10/type = "value"
+tracks/10/path = NodePath("Body/Head/MouthSmile:visibility/visible")
+tracks/10/interp = 1
+tracks/10/imported = false
+tracks/10/keys = { "times":FloatArray( 0 ), "transitions":FloatArray( 1 ), "update":1, "values":[ false ] }
+tracks/11/type = "method"
+tracks/11/path = NodePath("..")
+tracks/11/interp = 1
+tracks/11/imported = false
+tracks/11/keys = { "times":FloatArray( 1 ), "transitions":FloatArray( 1 ), "values":[ { "args":[  ], "method":"show_menu" } ] }
+
+[sub_resource type="Animation" id=4]
+
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:transform/pos")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0 ), "transitions":FloatArray( 1 ), "update":0, "values":[ Vector2( 44.0191, -352.187 ) ] }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body:transform/rot")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, -3.66345 ] }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/Leg1:transform/rot")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 22.3566, 17.4781 ] }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/Leg2:transform/rot")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.5348, 23.3571 ] }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Body/Head:transform/rot")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, 2.1281 ] }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Body/Arm1:transform/rot")
+tracks/5/interp = 1
+tracks/5/imported = false
+tracks/5/keys = { "times":FloatArray( 0, 1.00592 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.0934, 29.6582 ] }
+tracks/6/type = "value"
+tracks/6/path = NodePath("Body/Arm2:transform/rot")
+tracks/6/interp = 1
+tracks/6/imported = false
+tracks/6/keys = { "times":FloatArray( 0, 1.00592 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 12.6547, 15.3649 ] }
+
+[sub_resource type="Animation" id=5]
+
+length = 1.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:transform/pos")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 0.3, 0.5, 0.8 ), "transitions":FloatArray( 1, 1, 1, 1 ), "update":0, "values":[ Vector2( 30.843, -380.37 ), Vector2( 30.843, -350.37 ), Vector2( 30.843, -380.37 ), Vector2( 30.843, -350.37 ) ] }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body/Leg1:transform/rot")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 0, 0.5 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ -10.3884, 82.4766 ] }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/Leg2:transform/rot")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = { "times":FloatArray( 0, 0.5 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 51.0896, -0.806065 ] }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/Arm1:transform/rot")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = { "times":FloatArray( 0, 0.5 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ -32.9085, 52.5396 ] }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Body/Arm2:transform/rot")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = { "times":FloatArray( 0, 0.5 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 60.9702, -22.8107 ] }
+
+[sub_resource type="Animation" id=6]
+
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:transform/pos")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 30.843, -350.37 ), Vector2( 44.0191, -142.187 ) ] }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body:transform/rot")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, -98.905 ] }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/Leg1:transform/rot")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 22.3566, 9.05675 ] }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/Leg2:transform/rot")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.5348, -12.7753 ] }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Body/Head:transform/rot")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, -102.092 ] }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Body/Arm1:transform/rot")
+tracks/5/interp = 1
+tracks/5/imported = false
+tracks/5/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.0934, -106.386 ] }
+tracks/6/type = "value"
+tracks/6/path = NodePath("Body/Arm2:transform/rot")
+tracks/6/interp = 1
+tracks/6/imported = false
+tracks/6/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 12.6547, 190.169 ] }
+tracks/7/type = "method"
+tracks/7/path = NodePath("Body/Head/AnimationPlayer")
+tracks/7/interp = 1
+tracks/7/imported = false
+tracks/7/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "values":[ { "args":[ "sleep" ], "method":"play" }, { "args":[ "zzz" ], "method":"play" } ] }
+tracks/8/type = "value"
+tracks/8/path = NodePath("../Camera:zoom")
+tracks/8/interp = 1
+tracks/8/imported = false
+tracks/8/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ] }
+tracks/9/type = "value"
+tracks/9/path = NodePath("../Camera:offset")
+tracks/9/interp = 1
+tracks/9/imported = false
+tracks/9/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 0, -100 ), Vector2( 0, -80 ) ] }
+tracks/10/type = "value"
+tracks/10/path = NodePath("Body/Head/MouthSmile:visibility/visible")
+tracks/10/interp = 1
+tracks/10/imported = false
+tracks/10/keys = { "times":FloatArray( 0 ), "transitions":FloatArray( 1 ), "update":1, "values":[ false ] }
+tracks/11/type = "method"
+tracks/11/path = NodePath("..")
+tracks/11/interp = 1
+tracks/11/imported = false
+tracks/11/keys = { "times":FloatArray( 1 ), "transitions":FloatArray( 1 ), "values":[ { "args":[  ], "method":"show_menu" } ] }
+
+[sub_resource type="Animation" id=7]
+
+length = 2.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:transform/pos")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 30.843, -350.37 ), Vector2( 44.0191, -142.187 ) ] }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body:transform/rot")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0.0, 51.7631 ] }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/Leg1:transform/rot")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 22.3566, 9.44222 ] }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/Leg2:transform/rot")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.5348, -6.30862 ] }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Body/Head:transform/rot")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = { "times":FloatArray( 0, 0.4, 1 ), "transitions":FloatArray( 1, 1, 1 ), "update":0, "values":[ 0.0, 19.0273, 29.1384 ] }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Body/Arm1:transform/rot")
+tracks/5/interp = 1
+tracks/5/imported = false
+tracks/5/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 28.0934, 86.4936 ] }
+tracks/6/type = "value"
+tracks/6/path = NodePath("Body/Arm2:transform/rot")
+tracks/6/interp = 1
+tracks/6/imported = false
+tracks/6/keys = { "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 12.6547, 15.3649 ] }
+tracks/7/type = "method"
+tracks/7/path = NodePath("Body/Head/AnimationPlayer")
+tracks/7/interp = 1
+tracks/7/imported = false
+tracks/7/keys = { "times":FloatArray( 0.6 ), "transitions":FloatArray( 1 ), "values":[ { "args":[ "blink" ], "method":"play" } ] }
+tracks/8/type = "value"
+tracks/8/path = NodePath("../Camera:zoom")
+tracks/8/interp = 1
+tracks/8/imported = false
+tracks/8/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ] }
+tracks/9/type = "value"
+tracks/9/path = NodePath("../Camera:offset")
+tracks/9/interp = 1
+tracks/9/imported = false
+tracks/9/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 0, -100 ), Vector2( 0, -40 ) ] }
+tracks/10/type = "method"
+tracks/10/path = NodePath("..")
+tracks/10/interp = 1
+tracks/10/imported = false
+tracks/10/keys = { "times":FloatArray( 2 ), "transitions":FloatArray( 1 ), "values":[ { "args":[  ], "method":"show_menu" } ] }
+
+[node name="Mouse" type="KinematicBody2D"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, -9.47591e-07, -40.6783 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+script/script = SubResource( 2 )
+__meta__ = { "_edit_group_":true }
+
+[node name="Gfx" type="Node2D" parent="."]
+
+transform/scale = Vector2( 0.1, 0.1 )
+
+[node name="Body" type="Sprite" parent="Gfx"]
+
+transform/pos = Vector2( 30.843, -370.037 )
+transform/scale = Vector2( -1, 1 )
+texture = ExtResource( 1 )
+offset = Vector2( -4.83871, -101.076 )
+
+[node name="Head" parent="Gfx/Body" instance=ExtResource( 2 )]
+
+[node name="Leg1" type="Sprite" parent="Gfx/Body"]
+
+visibility/behind_parent = true
+transform/pos = Vector2( -31.4995, 47.3441 )
+transform/rot = 8.80344
+texture = ExtResource( 3 )
+offset = Vector2( -77.255, 121.686 )
+
+[node name="Leg2" type="Sprite" parent="Gfx/Body"]
+
+transform/pos = Vector2( 61.0799, 49.2341 )
+transform/rot = 40.3646
+texture = ExtResource( 3 )
+offset = Vector2( -79.1443, 117.908 )
+
+[node name="Arm1" type="Sprite" parent="Gfx/Body"]
+
+transform/pos = Vector2( 44.5957, -202.606 )
+transform/rot = -15.2495
+texture = ExtResource( 4 )
+offset = Vector2( -62.2581, 79.1486 )
+
+[node name="Arm2" type="Sprite" parent="Gfx/Body"]
+
+visibility/behind_parent = true
+transform/pos = Vector2( -47.776, -188.097 )
+transform/rot = 43.6557
+texture = ExtResource( 4 )
+offset = Vector2( -60.8124, 77.6698 )
+
+[node name="RayCast2D1" type="RayCast2D" parent="Gfx"]
+
+transform/pos = Vector2( 75.7237, -43.9427 )
+transform/scale = Vector2( 10, 10 )
+enabled = true
+cast_to = Vector2( 5, 0 )
+layer_mask = 1
+type_mask = 15
+
+[node name="RayCast2D2" type="RayCast2D" parent="Gfx"]
+
+transform/pos = Vector2( 58.7237, -793.943 )
+transform/scale = Vector2( 10, 10 )
+enabled = true
+cast_to = Vector2( 5, 0 )
+layer_mask = 1
+type_mask = 15
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Gfx"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/die = SubResource( 3 )
+anims/idle = SubResource( 4 )
+anims/run = SubResource( 5 )
+anims/sleep = SubResource( 6 )
+anims/win = SubResource( 7 )
+next/die = "stars"
+next/sleep = "stars"
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+transform/pos = Vector2( -9.47591e-07, -40.6783 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Camera" type="Camera2D" parent="."]
+
+offset = Vector2( 0, -100 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 5.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
+
+[node name="RayCast2D1" type="RayCast2D" parent="."]
+
+transform/pos = Vector2( -3, -1.50905 )
+enabled = true
+cast_to = Vector2( 0, 20 )
+layer_mask = 1
+type_mask = 15
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+
+transform/pos = Vector2( 2.94121, -1.50906 )
+enabled = true
+cast_to = Vector2( 0, 20 )
+layer_mask = 1
+type_mask = 15
+
+

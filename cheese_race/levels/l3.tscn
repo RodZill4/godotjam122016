@@ -1,0 +1,220 @@
+[gd_scene load_steps=22 format=1]
+
+[ext_resource path="res://addons/platform2d/thick_platform.gd" type="Script" id=1]
+[ext_resource path="res://addons/platform2d/thick_platform_icon.png" type="Texture" id=2]
+[ext_resource path="res://addons/platform2d/textures/simple_dirt.png" type="Texture" id=3]
+[ext_resource path="res://addons/platform2d/textures/simple_grass_topleft.png" type="Texture" id=4]
+[ext_resource path="res://addons/platform2d/textures/simple_grass_top.png" type="Texture" id=5]
+[ext_resource path="res://addons/platform2d/textures/simple_grass_topright.png" type="Texture" id=6]
+[ext_resource path="res://addons/platform2d/textures/simple_dirt_border.png" type="Texture" id=7]
+[ext_resource path="res://goal.tscn" type="PackedScene" id=8]
+[ext_resource path="res://cheese.tscn" type="PackedScene" id=9]
+[ext_resource path="res://rocks4.tscn" type="PackedScene" id=10]
+[ext_resource path="res://rock.tscn" type="PackedScene" id=11]
+[ext_resource path="res://rocks2.tscn" type="PackedScene" id=12]
+[ext_resource path="res://mouse.tscn" type="PackedScene" id=13]
+[ext_resource path="res://coin.tscn" type="PackedScene" id=14]
+[ext_resource path="res://parallax_background1.tscn" type="PackedScene" id=15]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+
+custom_solver_bias = 0.0
+points = Vector2Array( 1374.19, -425.129, 1580.42, -425.351, 1571.23, -40.1883, 570.831, -37.4446 )
+
+[sub_resource type="ConvexPolygonShape2D" id=2]
+
+custom_solver_bias = 0.0
+points = Vector2Array( 374.07, -425.737, 1374.19, -425.129, 570.831, -37.4446, -428.844, -34.3483 )
+
+[sub_resource type="ConvexPolygonShape2D" id=3]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -625.545, -426.808, 374.07, -425.737, -428.844, -34.3483, -1428.34, -31.1437 )
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -1624.96, -428.218, -625.545, -426.808, -1428.34, -31.1437, -2428.17, -27.767 )
+
+[sub_resource type="ConvexPolygonShape2D" id=5]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -2624.79, -430.891, -1624.96, -428.218, -2428.17, -27.767, -2633.19, -26.9457 )
+
+[sub_resource type="Curve2D" id=6]
+
+bake_interval = 1000.0
+_data = { "points":Vector2Array( 0, 0, 2.44458, -139.829, -2633.19, -26.9457, -0.68454, 147.537, 116.954, 2.56104, -2624.79, -430.891, -148.488, 1.23639, -3.59229, 126.735, 1580.42, -425.351, 2.51987, -121.684, -141.683, -0.217804, 1571.23, -40.1883, 199.036, -1.18652, 0, 0, -2633.19, -26.9457 ) }
+
+[node name="World" type="VisibilityEnabler2D"]
+
+rect = Rect2( -2161.88, -502.78, 3819.96, 933.326 )
+enabler/pause_animations = true
+enabler/freeze_bodies = true
+enabler/pause_particles = true
+enabler/pause_animated_sprites = true
+enabler/process_parent = false
+enabler/fixed_process_parent = false
+__meta__ = { "_edit_lock_":true }
+
+[node name="ThickPlatform" type="StaticBody2D" parent="."]
+
+editor/display_folded = true
+material/material = { "Angle":2.68403, "BakeInterval":1000.0, "FillSize":4.0, "FillTexture":"res://addons/platform2d/textures/simple_dirt.png", "SidePosition":0.646636, "SideTexture":"res://addons/platform2d/textures/simple_dirt_border.png", "SideThickness":20.0, "TopLeftOverflow":1.0, "TopLeftTexture":"res://addons/platform2d/textures/simple_grass_topleft.png", "TopPosition":0.8, "TopRightOverflow":0.968362, "TopRightTexture":"res://addons/platform2d/textures/simple_grass_topright.png", "TopTexture":"res://addons/platform2d/textures/simple_grass_top.png", "TopThickness":80.0 }
+transform/pos = Vector2( 193.701, 589.538 )
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+shapes/1/shape = SubResource( 2 )
+shapes/1/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/1/trigger = false
+shapes/2/shape = SubResource( 3 )
+shapes/2/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/2/trigger = false
+shapes/3/shape = SubResource( 4 )
+shapes/3/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/3/trigger = false
+shapes/4/shape = SubResource( 5 )
+shapes/4/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/4/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+script/script = ExtResource( 1 )
+__meta__ = { "_editor_icon":ExtResource( 2 ) }
+MovingPlatform = false
+Curve = SubResource( 6 )
+BakeInterval = 1000.0
+FillTexture = ExtResource( 3 )
+FillSize = 4.0
+TopLeftTexture = ExtResource( 4 )
+TopTexture = ExtResource( 5 )
+TopRightTexture = ExtResource( 6 )
+TopThickness = 80.0
+TopPosition = 0.8
+TopLeftOverflow = 1.0
+TopRightOverflow = 0.968362
+SideTexture = ExtResource( 7 )
+SideThickness = 20.0
+SidePosition = 0.646636
+Angle = 2.68403
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ThickPlatform"]
+
+build_mode = 0
+polygon = Vector2Array( -2633.19, -26.9457, -2624.79, -430.891, -1624.96, -428.218, -625.545, -426.808, 374.07, -425.737, 1374.19, -425.129, 1580.42, -425.351, 1571.23, -40.1883, 570.831, -37.4446, -428.844, -34.3483, -1428.34, -31.1437, -2428.17, -27.767 )
+shape_range = Vector2( 0, 4 )
+trigger = false
+
+[node name="Goal" parent="." instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 1323.76, 123.522 )
+next_level = "4"
+
+[node name="Cheese1" parent="." instance=ExtResource( 9 )]
+
+transform/pos = Vector2( -1374.3, 12.2086 )
+transform/scale = Vector2( 0.999998, 1 )
+
+[node name="Cheese2" parent="." instance=ExtResource( 9 )]
+
+transform/pos = Vector2( -296.406, -80.2727 )
+
+[node name="Cheese3" parent="." instance=ExtResource( 9 )]
+
+transform/pos = Vector2( 536.3, 42.7979 )
+
+[node name="Rocks1" parent="." instance=ExtResource( 10 )]
+
+transform/pos = Vector2( -2131.12, -13.3983 )
+
+[node name="Rocks2" parent="." instance=ExtResource( 10 )]
+
+transform/pos = Vector2( 1626.64, -8.17643 )
+
+[node name="Rock3" parent="." instance=ExtResource( 11 )]
+
+transform/pos = Vector2( -1373.34, 118.148 )
+transform/scale = Vector2( 0.999998, 1 )
+
+[node name="Rocks4" parent="." instance=ExtResource( 12 )]
+
+transform/pos = Vector2( -299.658, 76.6844 )
+transform/scale = Vector2( 0.999998, 1 )
+
+[node name="Mouse" parent="." instance=ExtResource( 13 )]
+
+transform/pos = Vector2( -1932.18, 159.15 )
+z/z = 1
+
+[node name="Coin" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -2013.78, 102.551 )
+
+[node name="Coin1" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -1541.76, 108.271 )
+
+[node name="Coin2" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -1473.06, 37.3376 )
+
+[node name="Coin3" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -1278.05, 37.3376 )
+
+[node name="Coin4" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -1202.7, 112.847 )
+
+[node name="Coin5" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -586.408, 117.004 )
+
+[node name="Coin6" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -511.587, 24.2983 )
+
+[node name="Coin7" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -413.64, -45.9337 )
+
+[node name="Coin8" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -174.213, -41.7197 )
+
+[node name="Coin9" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -53.1391, 39.7494 )
+
+[node name="Coin10" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( 51.6102, 118.409 )
+
+[node name="Coin11" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( -175.573, 117.005 )
+
+[node name="Coin12" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( 641.408, -37.0778 )
+
+[node name="Coin13" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( 881.076, -38.6342 )
+
+[node name="Coin14" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( 988.098, 36.0723 )
+
+[node name="Coin15" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( 760.489, -82.213 )
+
+[node name="Background" parent="." instance=ExtResource( 15 )]
+
+

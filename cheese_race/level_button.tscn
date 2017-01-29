@@ -1,0 +1,137 @@
+[gd_scene load_steps=13 format=1]
+
+[ext_resource path="res://gfx/level_button.png" type="Texture" id=1]
+[ext_resource path="res://gfx/Jellee-Roman.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://gfx/star.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=1]
+
+resource/name = "level_button"
+script/source = "extends Sprite\n\nonready var global = get_node(\"/root/global\")\n\nfunc _ready():\n\tif global.level_is_locked(get_name()):\n\t\tget_node(\"Label\").set_text(\"\")\n\t\tset_opacity(0.3)\n\telse:\n\t\tget_node(\"Label\").set_text(get_name())\n\t\tfor i in range(1, global.level_get_stars(get_name())+1):\n\t\t\tget_node(\"Star\"+str(i)).show()\n\nfunc _on_Button_pressed():\n\tif global.level_is_locked(get_name()):\n\t\tprint(\"Level \"+get_name()+\" is locked\")\n\telif global.lives_get().count > 0:\n\t\tget_node(\"/root/global\").load_game(get_name())\n\telse:\n\t\tget_tree().call_group(SceneTree.GROUP_CALL_UNIQUE, \"more_lives\", \"show\")\n"
+
+[sub_resource type="DynamicFont" id=2]
+
+font/size = 24
+font/use_mipmaps = false
+font/use_filter = false
+font/font = ExtResource( 2 )
+
+[sub_resource type="Theme" id=3]
+
+default_font = SubResource( 2 )
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+
+[sub_resource type="Theme" id=9]
+
+Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
+Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
+Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = null
+Button/styles/disabled = SubResource( 4 )
+Button/styles/focus = SubResource( 5 )
+Button/styles/hover = SubResource( 6 )
+Button/styles/normal = SubResource( 7 )
+Button/styles/pressed = SubResource( 8 )
+
+[node name="LevelButton" type="Sprite"]
+
+transform/pos = Vector2( 138.597, 515.763 )
+transform/scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 1 )
+script/script = SubResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+
+rect/scale = Vector2( 1.5, 1.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 3 )
+margin/left = -54.0
+margin/top = -36.0
+margin/right = 20.0
+margin/bottom = -6.0
+text = "1"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Star1" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -36.877, 25.9925 )
+transform/scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 3 )
+
+[node name="Star2" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( 0.46423, 34.9304 )
+transform/scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 3 )
+
+[node name="Star3" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( 37.6048, 25.5524 )
+transform/scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 3 )
+
+[node name="Button" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 9 )
+margin/left = -58.0
+margin/top = -41.0
+margin/right = 58.0
+margin/bottom = 40.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+
+

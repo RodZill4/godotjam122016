@@ -1,0 +1,136 @@
+[gd_scene load_steps=9 format=1]
+
+[ext_resource path="res://gfx/Jellee-Roman.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://gfx/mouse/belly.png" type="Texture" id=2]
+[ext_resource path="res://mouse_head.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gfx/mouse/leg.png" type="Texture" id=4]
+[ext_resource path="res://gfx/mouse/arm.png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=1]
+
+resource/name = "more_lives"
+script/source = "extends Control\n\nfunc show():\n\tget_tree().set_pause(true)\n\tget_node(\"Depth/Frame/Mouse/Head/AnimationPlayer\").play(\"sleep\")\n\t.show()\n\nfunc _on_Button_pressed():\n\tget_node(\"Depth/Frame/Mouse/Head/AnimationPlayer\").stop()\n\tget_node(\"/root/global\").lives_add(1)\n\thide()\n\tget_tree().set_pause(false)\n"
+
+[sub_resource type="DynamicFont" id=2]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = false
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=3]
+
+default_font = SubResource( 2 )
+
+[node name="MoreLives" type="Control" groups=[ "more_lives" ]]
+
+process/pause_mode = 2
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+script/script = SubResource( 1 )
+
+[node name="Depth" type="Node2D" parent="."]
+
+editor/display_folded = true
+z/z = 100
+
+[node name="Frame" type="Panel" parent="Depth"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 3 )
+margin/left = 232.0
+margin/top = 232.0
+margin/right = -168.0
+margin/bottom = -8.0
+
+[node name="Mouse" type="Sprite" parent="Depth/Frame"]
+
+editor/display_folded = true
+transform/pos = Vector2( 201.385, 60.6763 )
+transform/rot = 103.903
+transform/scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 2 )
+
+[node name="Head" parent="Depth/Frame/Mouse" instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 67.6891, -198.709 )
+transform/rot = -109.694
+
+[node name="Leg1" type="Sprite" parent="Depth/Frame/Mouse"]
+
+transform/pos = Vector2( 38.703, 146.047 )
+transform/rot = -6.50276
+texture = ExtResource( 4 )
+offset = Vector2( -80.2374, 124.27 )
+
+[node name="Leg2" type="Sprite" parent="Depth/Frame/Mouse"]
+
+visibility/behind_parent = true
+transform/pos = Vector2( -31.3274, 126.372 )
+transform/rot = 7.7131
+texture = ExtResource( 4 )
+offset = Vector2( -80.2374, 124.27 )
+
+[node name="Arm1" type="Sprite" parent="Depth/Frame/Mouse"]
+
+transform/pos = Vector2( 59.6663, -80.4871 )
+transform/rot = -117.591
+texture = ExtResource( 5 )
+offset = Vector2( -59.8919, 80.1655 )
+
+[node name="Label" type="Label" parent="Depth/Frame"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 20.0
+margin/top = 85.0
+margin/right = 377.0
+margin/bottom = 173.0
+text = "I\'m tired, leave me alone..."
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Button" type="Button" parent="Depth/Frame"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 94.0
+margin/top = 181.0
+margin/right = 306.0
+margin/bottom = 227.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Wake up !"
+flat = false
+
+[connection signal="pressed" from="Depth/Frame/Button" to="." method="_on_Button_pressed"]
+
+

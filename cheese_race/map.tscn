@@ -1,0 +1,367 @@
+[gd_scene load_steps=17 format=1]
+
+[ext_resource path="res://scripts/map.gd" type="Script" id=1]
+[ext_resource path="res://gfx/map/background1.png" type="Texture" id=2]
+[ext_resource path="res://gfx/map/path1.png" type="Texture" id=3]
+[ext_resource path="res://gfx/map/tree1.png" type="Texture" id=4]
+[ext_resource path="res://gfx/map/tree2.png" type="Texture" id=5]
+[ext_resource path="res://gfx/map/rock.png" type="Texture" id=6]
+[ext_resource path="res://gfx/map/grass.png" type="Texture" id=7]
+[ext_resource path="res://level_button.tscn" type="PackedScene" id=8]
+[ext_resource path="res://lives.tscn" type="PackedScene" id=9]
+[ext_resource path="res://more_lives.tscn" type="PackedScene" id=10]
+[ext_resource path="res://gfx/ui/setup.png" type="Texture" id=11]
+[ext_resource path="res://gfx/ui/setup_p.png" type="Texture" id=12]
+[ext_resource path="res://config_panel.tscn" type="PackedScene" id=13]
+
+[sub_resource type="Curve2D" id=2]
+
+bake_interval = 30.0
+_data = { "points":Vector2Array( 0, 0, 7.99603, -278.975, -658.603, 571.087, 0, 0, 0, 0, -202.29, 353.214, 0, 0, 206.408, 21.4079, 248.405, 417.536, -23.9037, 117.98, 26.547, -260.279, 591.584, 283.71, 101.933, -3.9205, -137.218, 4.90063, 263.248, 52.5703, 0, 0, -188.639, 9.06919, -238.831, 67.9164, -9.06919, 92.5057, 16.3245, -179.57, -506.625, -158.964, 0, 0, 76.1812, 32.6491, -283.463, -251.948, -244.868, -34.4629, 204.043, 14.546, 125.666, -47.3837, -91.4536, 64.9802, 150.417, -101.08, 471.566, -151.526, 43.3201, 31.2868, -89.047, -75.8102, 564.55, -385.845, 0, 0, -111.241, 112.978, 337.669, -300.3, 62.804, 25.6523, -122.804, -41.6914, 123.046, -198.556, 66.6669, 52.0002, -94.667, -76.0002, 44.4028, -449.799, 116.646, 44.9895, -72.0002, -30.6668, -446.033, -388.25, 0, 0, 0, 0, -498.034, -577.584 ) }
+
+[sub_resource type="GDScript" id=3]
+
+script/source = "tool\nextends Path2D\n\nexport(Texture) var texture = null setget set_texture\nexport(float) var width = 10 setget set_width\n\nfunc set_texture(t):\n\ttexture = t\n\tupdate()\n\nfunc set_width(w):\n\twidth = w\n\tupdate()\n\nfunc _ready():\n\tpass\n\nfunc _draw():\n\tvar points = get_curve().get_baked_points()\n\tvar texture_size = texture.get_size()\n\tvar uv_ratio = texture_size.y/(texture_size.x*width)\n\tvar p = []\n\tp.append(Vector2(0, 0))\n\tp.append(Vector2(0, 0))\n\tp.append(Vector2(0, 0))\n\tp.append(Vector2(0, 0))\n\tvar color = Color(1, 1, 1, get_opacity())\n\tvar colors = []\n\tcolors.append(color)\n\tcolors.append(color)\n\tcolors.append(color)\n\tcolors.append(color)\n\tvar uv = []\n\tuv.append(Vector2(0, 0))\n\tuv.append(Vector2(0, 1))\n\tuv.append(Vector2(0, 1))\n\tuv.append(Vector2(0, 0))\n\tfor i in range(points.size()-1):\n\t\tvar t = points[i+1]-points[i]\n\t\tvar n = 0.5*width*t.rotated(0.5*PI).normalized()\n\t\tp[2] = points[i] + n\n\t\tp[3] = points[i] - n\n\t\tif i > 0:\n\t\t\tvar uv_inc = uv_ratio * t.length()\n\t\t\tuv[2].x += uv_inc\n\t\t\tuv[3].x += uv_inc\n\t\t\tdraw_polygon(p, colors, uv, texture)\n\t\tp[0] = p[3]\n\t\tp[1] = p[2]\n\t\tuv[0] = uv[3]\n\t\tuv[1] = uv[2]\n\t\t"
+
+[sub_resource type="Curve2D" id=4]
+
+bake_interval = 5.0
+_data = { "points":Vector2Array( 0, 0, 13.5416, -268.751, 349.982, 411.489, -4.45384, 236.053, 0, 0, -201.801, 75.5655 ) }
+
+[node name="LevelChooser" type="Control"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+script/script = ExtResource( 1 )
+
+[node name="Center" type="Control" parent="."]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+
+[node name="Map1" type="Node2D" parent="Center"]
+
+z/z = -10
+
+[node name="Gfx" type="Node2D" parent="Center/Map1"]
+
+transform/pos = Vector2( 5, -78 )
+transform/scale = Vector2( 0.75, 0.75 )
+
+[node name="Background1" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 0.590088, 1.82727 )
+transform/scale = Vector2( 29.195, 16.0899 )
+texture = ExtResource( 2 )
+modulate = Color( 0.265625, 1, 0, 1 )
+
+[node name="Path" type="Path2D" parent="Center/Map1/Gfx"]
+
+curve = SubResource( 2 )
+script/script = SubResource( 3 )
+texture = ExtResource( 3 )
+width = 30.0
+
+[node name="Tree1" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -402.217, 209.887 )
+texture = ExtResource( 4 )
+
+[node name="Tree2" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -112.469, 229.531 )
+z/z = 1
+texture = ExtResource( 4 )
+
+[node name="Tree3" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 378.628, 270.456 )
+texture = ExtResource( 4 )
+
+[node name="Tree4" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 524.32, -36.6633 )
+texture = ExtResource( 4 )
+
+[node name="Tree5" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -164.853, -310.676 )
+texture = ExtResource( 4 )
+
+[node name="Tree6" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -570.827, -261.566 )
+texture = ExtResource( 4 )
+
+[node name="Tree7" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -520.081, 255.723 )
+texture = ExtResource( 5 )
+
+[node name="Tree8" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 286.956, 306.47 )
+z/z = 1
+texture = ExtResource( 5 )
+
+[node name="Tree9" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 237.847, -346.69 )
+texture = ExtResource( 5 )
+
+[node name="Tree10" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -337.081, -67.862 )
+texture = ExtResource( 5 )
+
+[node name="Rock1" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -133.053, 4.22195 )
+texture = ExtResource( 6 )
+
+[node name="Rock2" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 118.948, -130.445 )
+texture = ExtResource( 6 )
+
+[node name="Rock3" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 157.36, 331.976 )
+texture = ExtResource( 6 )
+
+[node name="Rock4" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -266.65, 268.448 )
+transform/scale = Vector2( -1, 1 )
+texture = ExtResource( 6 )
+
+[node name="Rock5" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 194.644, 363.121 )
+transform/scale = Vector2( -0.4, 0.4 )
+texture = ExtResource( 6 )
+
+[node name="Rock6" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -478.052, 457.682 )
+transform/scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 6 )
+
+[node name="Rock7" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -227.742, 296.614 )
+transform/scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 6 )
+
+[node name="Rock8" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -89.8898, 29.6153 )
+transform/scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 6 )
+
+[node name="Rock9" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 71.542, -106.423 )
+transform/scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 6 )
+
+[node name="Rock10" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -40.1329, -363.635 )
+texture = ExtResource( 6 )
+
+[node name="Rock11" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -0.428422, -336.9 )
+transform/scale = Vector2( -0.4, 0.4 )
+texture = ExtResource( 6 )
+
+[node name="Grass1" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -540.363, 319.895 )
+texture = ExtResource( 7 )
+
+[node name="Grass2" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -467.594, 329.261 )
+texture = ExtResource( 7 )
+
+[node name="Grass3" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -446.7, 295.398 )
+texture = ExtResource( 7 )
+
+[node name="Grass4" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -394.104, 324.218 )
+texture = ExtResource( 7 )
+
+[node name="Grass5" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -138.333, 299.721 )
+texture = ExtResource( 7 )
+
+[node name="Grass6" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -373.21, 409.235 )
+texture = ExtResource( 7 )
+
+[node name="Grass7" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -498.574, 468.314 )
+texture = ExtResource( 7 )
+
+[node name="Grass8" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 310.296, 363.379 )
+texture = ExtResource( 7 )
+
+[node name="Grass9" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 404.06, 321.805 )
+texture = ExtResource( 7 )
+
+[node name="Grass10" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -8.14728, 22.822 )
+texture = ExtResource( 7 )
+
+[node name="Grass11" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -219.558, -37.3285 )
+texture = ExtResource( 7 )
+
+[node name="Grass12" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -294.746, 13.9763 )
+texture = ExtResource( 7 )
+
+[node name="Grass13" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -614.034, -194.538 )
+texture = ExtResource( 7 )
+
+[node name="Grass14" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -128.586, -248.839 )
+texture = ExtResource( 7 )
+
+[node name="Grass15" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( -78.6295, -350.924 )
+texture = ExtResource( 7 )
+
+[node name="Grass16" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 158.121, -275.989 )
+texture = ExtResource( 7 )
+
+[node name="Grass17" type="Sprite" parent="Center/Map1/Gfx"]
+
+transform/pos = Vector2( 146.175, -101.141 )
+texture = ExtResource( 7 )
+
+[node name="Levels" type="Node2D" parent="Center/Map1"]
+
+transform/pos = Vector2( 9, -83 )
+transform/scale = Vector2( 0.75, 0.75 )
+
+[node name="1" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( -593.72, 417.296 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="2" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( -244.884, 361.617 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="3" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 145.058, 413.746 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="4" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 542.749, 366.545 )
+transform/scale = Vector2( 1, 1 )
+z/z = 1
+
+[node name="5" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 516.968, 100.639 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="6" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 157.281, 55.0929 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="7" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( -239.222, 62.9708 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="8" parent="Center/Map1/Levels" instance=ExtResource( 8 )]
+
+transform/pos = Vector2( -498.686, -95.1409 )
+transform/scale = Vector2( 1, 1 )
+z/z = 1
+
+[node name="Hidden1" type="Path2D" parent="Center/Map1"]
+
+visibility/visible = false
+visibility/opacity = 0.5
+transform/pos = Vector2( 5, -78 )
+transform/scale = Vector2( 0.75, 0.75 )
+curve = SubResource( 4 )
+script/script = SubResource( 3 )
+texture = ExtResource( 3 )
+width = 30.0
+
+[node name="Lives" parent="." instance=ExtResource( 9 )]
+
+[node name="MoreLives" parent="." instance=ExtResource( 10 )]
+
+[node name="ConfigButton" type="TextureButton" parent="."]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 66.0
+margin/top = 2.0
+margin/right = 2.0
+margin/bottom = 66.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 11 )
+textures/pressed = ExtResource( 12 )
+params/scale = Vector2( 0.5, 0.5 )
+
+[node name="ConfigPanel" parent="." instance=ExtResource( 13 )]
+
+[connection signal="pressed" from="ConfigButton" to="." method="_on_ConfigButton_pressed"]
+
+
