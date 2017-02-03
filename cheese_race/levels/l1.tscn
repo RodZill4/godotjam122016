@@ -1,104 +1,149 @@
-[gd_scene load_steps=20 format=1]
+[gd_scene load_steps=29 format=1]
 
-[ext_resource path="res://parallax_background1.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/platform2d/thick_platform.gd" type="Script" id=2]
-[ext_resource path="res://addons/platform2d/thick_platform_icon.png" type="Texture" id=3]
-[ext_resource path="res://addons/platform2d/textures/simple_dirt.png" type="Texture" id=4]
-[ext_resource path="res://addons/platform2d/textures/simple_grass_topleft.png" type="Texture" id=5]
-[ext_resource path="res://addons/platform2d/textures/simple_grass_top.png" type="Texture" id=6]
-[ext_resource path="res://addons/platform2d/textures/simple_grass_topright.png" type="Texture" id=7]
-[ext_resource path="res://addons/platform2d/textures/simple_dirt_border.png" type="Texture" id=8]
-[ext_resource path="res://rocks4.tscn" type="PackedScene" id=9]
-[ext_resource path="res://mouse.tscn" type="PackedScene" id=10]
-[ext_resource path="res://cheese.tscn" type="PackedScene" id=11]
-[ext_resource path="res://coin.tscn" type="PackedScene" id=12]
-[ext_resource path="res://goal.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scripts/tutorial.gd" type="Script" id=1]
+[ext_resource path="res://parallax_background1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/platform2d/thick_platform.gd" type="Script" id=3]
+[ext_resource path="res://addons/platform2d/thick_platform_icon.png" type="Texture" id=4]
+[ext_resource path="res://addons/platform2d/textures/simple_dirt.png" type="Texture" id=5]
+[ext_resource path="res://addons/platform2d/textures/simple_grass_topleft.png" type="Texture" id=6]
+[ext_resource path="res://addons/platform2d/textures/simple_grass_top.png" type="Texture" id=7]
+[ext_resource path="res://addons/platform2d/textures/simple_grass_topright.png" type="Texture" id=8]
+[ext_resource path="res://addons/platform2d/textures/simple_dirt_border.png" type="Texture" id=9]
+[ext_resource path="res://rocks4.tscn" type="PackedScene" id=10]
+[ext_resource path="res://mouse.tscn" type="PackedScene" id=11]
+[ext_resource path="res://cheese.tscn" type="PackedScene" id=12]
+[ext_resource path="res://coin.tscn" type="PackedScene" id=13]
+[ext_resource path="res://goal.tscn" type="PackedScene" id=14]
+[ext_resource path="res://gfx/ui/theme.tres" type="Theme" id=15]
+[ext_resource path="res://gfx/button_close.png" type="Texture" id=16]
+[ext_resource path="res://gfx/ui/arrow.png" type="Texture" id=17]
 
-[sub_resource type="ConvexPolygonShape2D" id=1]
-
-custom_solver_bias = 0.0
-points = Vector2Array( 1374.19, -425.129, 1580.42, -425.351, 1571.23, -40.1883, 570.831, -37.4446 )
-
-[sub_resource type="ConvexPolygonShape2D" id=2]
-
-custom_solver_bias = 0.0
-points = Vector2Array( 374.07, -425.737, 1374.19, -425.129, 570.831, -37.4446, -428.844, -34.3483 )
-
-[sub_resource type="ConvexPolygonShape2D" id=3]
+[sub_resource type="ConvexPolygonShape2D" id=11]
 
 custom_solver_bias = 0.0
-points = Vector2Array( -625.545, -426.808, 374.07, -425.737, -428.844, -34.3483, -1428.34, -31.1437 )
+points = Vector2Array( 1978.75, -419.92, 2014.39, -420.016, 2013.49, -320.044, -2633.19, -26.9457, -2630.98, -126.955 )
 
-[sub_resource type="ConvexPolygonShape2D" id=4]
-
-custom_solver_bias = 0.0
-points = Vector2Array( -1624.96, -428.218, -625.545, -426.808, -1428.34, -31.1437, -2428.17, -27.767 )
-
-[sub_resource type="ConvexPolygonShape2D" id=5]
+[sub_resource type="ConvexPolygonShape2D" id=12]
 
 custom_solver_bias = 0.0
-points = Vector2Array( -2624.79, -430.891, -1624.96, -428.218, -2428.17, -27.767, -2633.19, -26.9457 )
+points = Vector2Array( -2624.81, -426.876, -2624.79, -430.891, 1978.75, -419.92 )
 
-[sub_resource type="Curve2D" id=6]
+[sub_resource type="ConvexPolygonShape2D" id=13]
 
-bake_interval = 1000.0
-_data = { "points":Vector2Array( 0, 0, 2.44458, -139.829, -2633.19, -26.9457, -0.68454, 147.537, 116.954, 2.56104, -2624.79, -430.891, -148.488, 1.23639, -3.59229, 126.735, 1580.42, -425.351, 2.51987, -121.684, -141.683, -0.217804, 1571.23, -40.1883, 199.036, -1.18652, 0, 0, -2633.19, -26.9457 ) }
+custom_solver_bias = 0.0
+points = Vector2Array( 2016.37, -120.068, 2015.92, -43.5604, 1915.74, -43.3504 )
+
+[sub_resource type="ConvexPolygonShape2D" id=14]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -2630.98, -126.955, -2624.81, -426.876, 1978.75, -419.92 )
+
+[sub_resource type="ConvexPolygonShape2D" id=15]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -2633.19, -26.9457, 2013.49, -320.044, 2016.37, -120.068, -2588.03, -27.1648 )
+
+[sub_resource type="ConvexPolygonShape2D" id=16]
+
+custom_solver_bias = 0.0
+points = Vector2Array( 2016.37, -120.068, 1915.74, -43.3504, -2588.03, -27.1648 )
+
+[sub_resource type="ConvexPolygonShape2D" id=17]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -2633.19, -26.9457, -2633.19, -26.9457, -2588.03, -27.1648 )
+
+[sub_resource type="Curve2D" id=7]
+
+bake_interval = 100.0
+_data = { "points":Vector2Array( 0, 0, 2.44458, -139.829, -2633.19, -26.9457, -0.68454, 147.537, 116.954, 2.56104, -2624.79, -430.891, -148.488, 1.23639, -3.59229, 126.735, 2014.39, -420.016, 2.51987, -121.684, -141.683, -0.217804, 2015.92, -43.5604, 199.036, -1.18652, 0, 0, -2633.19, -26.9457 ) }
+
+[sub_resource type="RectangleShape2D" id=8]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 44.8194 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+bg_color = Color( 0, 0, 0, 0.289608 )
+light_color = Color( 0.8, 0.8, 0.8, 1 )
+dark_color = Color( 0.8, 0.8, 0.8, 1 )
+border_size = 0
+border_blend = true
+draw_bg = true
+
+[sub_resource type="Theme" id=10]
+
+Panel/styles/panel = SubResource( 9 )
+Panel/styles/panelf = null
+Panel/styles/panelnc = null
 
 [node name="World" type="VisibilityEnabler2D"]
 
-rect = Rect2( -2161.88, -502.78, 3819.96, 933.326 )
+rect = Rect2( -2161.88, -502.78, 4323.69, 933.326 )
 enabler/pause_animations = true
 enabler/freeze_bodies = true
 enabler/pause_particles = true
 enabler/pause_animated_sprites = true
 enabler/process_parent = false
 enabler/fixed_process_parent = false
+script/script = ExtResource( 1 )
 __meta__ = { "_edit_lock_":true }
 
-[node name="Background" parent="." instance=ExtResource( 1 )]
+[node name="Background" parent="." instance=ExtResource( 2 )]
 
 [node name="ThickPlatform" type="StaticBody2D" parent="."]
 
 editor/display_folded = true
-material/material = { "Angle":2.68403, "BakeInterval":1000.0, "FillSize":4.0, "FillTexture":"res://addons/platform2d/textures/simple_dirt.png", "SidePosition":0.646636, "SideTexture":"res://addons/platform2d/textures/simple_dirt_border.png", "SideThickness":20.0, "TopLeftOverflow":1.0, "TopLeftTexture":"res://addons/platform2d/textures/simple_grass_topleft.png", "TopPosition":0.8, "TopRightOverflow":0.968362, "TopRightTexture":"res://addons/platform2d/textures/simple_grass_topright.png", "TopTexture":"res://addons/platform2d/textures/simple_grass_top.png", "TopThickness":80.0 }
+material/material = { "Angle":2.68403, "BakeInterval":100.0, "FillSize":4.0, "FillTexture":"res://addons/platform2d/textures/simple_dirt.png", "SidePosition":0.646636, "SideTexture":"res://addons/platform2d/textures/simple_dirt_border.png", "SideThickness":20.0, "TopLeftOverflow":1.0, "TopLeftTexture":"res://addons/platform2d/textures/simple_grass_topleft.png", "TopPosition":0.8, "TopRightOverflow":0.968362, "TopRightTexture":"res://addons/platform2d/textures/simple_grass_topright.png", "TopTexture":"res://addons/platform2d/textures/simple_grass_top.png", "TopThickness":80.0 }
 transform/pos = Vector2( 193.701, 589.538 )
 input/pickable = false
-shapes/0/shape = SubResource( 1 )
+shapes/0/shape = SubResource( 11 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
-shapes/1/shape = SubResource( 2 )
+shapes/1/shape = SubResource( 12 )
 shapes/1/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/1/trigger = false
-shapes/2/shape = SubResource( 3 )
+shapes/2/shape = SubResource( 13 )
 shapes/2/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/2/trigger = false
-shapes/3/shape = SubResource( 4 )
+shapes/3/shape = SubResource( 14 )
 shapes/3/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/3/trigger = false
-shapes/4/shape = SubResource( 5 )
+shapes/4/shape = SubResource( 15 )
 shapes/4/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/4/trigger = false
+shapes/5/shape = SubResource( 16 )
+shapes/5/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/5/trigger = false
+shapes/6/shape = SubResource( 17 )
+shapes/6/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/6/trigger = false
 collision/layers = 1
 collision/mask = 1
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
-script/script = ExtResource( 2 )
-__meta__ = { "_editor_icon":ExtResource( 3 ) }
+script/script = ExtResource( 3 )
+__meta__ = { "_editor_icon":ExtResource( 4 ) }
 MovingPlatform = false
-Curve = SubResource( 6 )
-BakeInterval = 1000.0
-FillTexture = ExtResource( 4 )
+Curve = SubResource( 7 )
+BakeInterval = 100.0
+FillTexture = ExtResource( 5 )
 FillSize = 4.0
-TopLeftTexture = ExtResource( 5 )
-TopTexture = ExtResource( 6 )
-TopRightTexture = ExtResource( 7 )
+TopLeftTexture = ExtResource( 6 )
+TopTexture = ExtResource( 7 )
+TopRightTexture = ExtResource( 8 )
 TopThickness = 80.0
 TopPosition = 0.8
 TopLeftOverflow = 1.0
 TopRightOverflow = 0.968362
-SideTexture = ExtResource( 8 )
+SideTexture = ExtResource( 9 )
 SideThickness = 20.0
 SidePosition = 0.646636
 Angle = 2.68403
@@ -106,74 +151,407 @@ Angle = 2.68403
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ThickPlatform"]
 
 build_mode = 0
-polygon = Vector2Array( -2633.19, -26.9457, -2624.79, -430.891, -1624.96, -428.218, -625.545, -426.808, 374.07, -425.737, 1374.19, -425.129, 1580.42, -425.351, 1571.23, -40.1883, 570.831, -37.4446, -428.844, -34.3483, -1428.34, -31.1437, -2428.17, -27.767 )
-shape_range = Vector2( 0, 4 )
+polygon = Vector2Array( -2633.19, -26.9457, -2630.98, -126.955, -2624.81, -426.876, -2624.79, -430.891, 1978.75, -419.92, 2014.39, -420.016, 2013.49, -320.044, 2016.37, -120.068, 2015.92, -43.5604, 1915.74, -43.3504, -2588.03, -27.1648, -2633.19, -26.9457 )
+shape_range = Vector2( 0, 6 )
 trigger = false
 
-[node name="Rocks1" parent="." instance=ExtResource( 9 )]
+[node name="Rocks1" parent="." instance=ExtResource( 10 )]
 
 transform/pos = Vector2( -2132.29, -13.0786 )
 
-[node name="Rocks2" parent="." instance=ExtResource( 9 )]
+[node name="Rocks2" parent="." instance=ExtResource( 10 )]
 
-transform/pos = Vector2( 1622.07, -5.85087 )
+transform/pos = Vector2( 2133.14, -0.840342 )
 
-[node name="Mouse" parent="." instance=ExtResource( 10 )]
+[node name="Mouse" parent="." instance=ExtResource( 11 )]
 
 transform/pos = Vector2( -1932.18, 159.15 )
 z/z = 1
 
-[node name="Cheese1" parent="." instance=ExtResource( 11 )]
+[node name="Cheese1" parent="." instance=ExtResource( 12 )]
 
 transform/pos = Vector2( -1584.3, 95.0821 )
 
-[node name="Coin1" parent="." instance=ExtResource( 12 )]
+[node name="Coin1" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -1308.85, 100.207 )
+transform/pos = Vector2( -757.461, 96.7822 )
 
-[node name="Coin3" parent="." instance=ExtResource( 12 )]
+[node name="Coin3" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -1189.76, 4.11948 )
+transform/pos = Vector2( -638.371, 0.694675 )
 
-[node name="Coin2" parent="." instance=ExtResource( 12 )]
+[node name="Coin2" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -1057.9, 3.6264 )
+transform/pos = Vector2( -506.511, 0.201595 )
 
-[node name="Coin4" parent="." instance=ExtResource( 12 )]
+[node name="Coin4" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -938.62, 99.9922 )
+transform/pos = Vector2( -387.231, 96.5674 )
 
-[node name="Coin5" parent="." instance=ExtResource( 12 )]
+[node name="Cheese2" parent="." instance=ExtResource( 12 )]
 
-transform/pos = Vector2( -574.044, 101.047 )
+transform/pos = Vector2( -227.426, 102.307 )
 
-[node name="Coin6" parent="." instance=ExtResource( 12 )]
+[node name="Coin5" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -480.678, 8.3411 )
+transform/pos = Vector2( 347.221, 90.7726 )
 
-[node name="Coin7" parent="." instance=ExtResource( 12 )]
+[node name="Coin6" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -367.277, -55.508 )
+transform/pos = Vector2( 440.587, -1.93331 )
 
-[node name="Coin8" parent="." instance=ExtResource( 12 )]
+[node name="Coin7" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -223.667, -57.6769 )
+transform/pos = Vector2( 553.988, -65.7824 )
 
-[node name="Coin9" parent="." instance=ExtResource( 12 )]
+[node name="Coin8" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -99.8278, 16.6365 )
+transform/pos = Vector2( 697.598, -67.9513 )
 
-[node name="Coin10" parent="." instance=ExtResource( 12 )]
+[node name="Coin9" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( -5.84842, 108.835 )
+transform/pos = Vector2( 821.438, 6.36209 )
 
-[node name="Cheese2" parent="." instance=ExtResource( 11 )]
+[node name="Coin10" parent="." instance=ExtResource( 13 )]
 
-transform/pos = Vector2( 536.3, 95.457 )
+transform/pos = Vector2( 915.417, 98.5606 )
 
-[node name="Goal" parent="." instance=ExtResource( 13 )]
+[node name="Cheese3" parent="." instance=ExtResource( 12 )]
 
-transform/pos = Vector2( 1323.76, 123.522 )
+transform/pos = Vector2( 1110.08, 65.0561 )
+transform/scale = Vector2( 2, 2 )
+energy = 100.0
+
+[node name="Goal" parent="." instance=ExtResource( 14 )]
+
+transform/pos = Vector2( 1880.42, 128.066 )
 next_level = "2"
+
+[node name="Tuto1" type="Area2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( -1758.17, 100.691 )
+input/pickable = true
+shapes/0/shape = SubResource( 8 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tuto1"]
+
+shape = SubResource( 8 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Tuto2" type="Area2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( -1210.39, 102.542 )
+input/pickable = true
+shapes/0/shape = SubResource( 8 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tuto2"]
+
+shape = SubResource( 8 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Tuto3" type="Area2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( -30.6322, 99.3937 )
+input/pickable = true
+shapes/0/shape = SubResource( 8 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tuto3"]
+
+shape = SubResource( 8 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Tuto4" type="Area2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( 1264.45, 97.1217 )
+input/pickable = true
+shapes/0/shape = SubResource( 8 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tuto4"]
+
+shape = SubResource( 8 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Tutorials" type="CanvasLayer" parent="."]
+
+process/pause_mode = 2
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="Background" type="Panel" parent="Tutorials"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+
+[node name="Tuto1" type="Panel" parent="Tutorials/Background"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 15 )
+margin/left = 178.0
+margin/top = 108.0
+margin/right = 800.0
+margin/bottom = 281.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Tutorials/Background/Tuto1"]
+
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 31.0
+margin/top = 26.0
+margin/right = 1205.0
+margin/bottom = 312.0
+bbcode/enabled = false
+bbcode/bbcode = "This is your energy bar.\nCheese is energy. When out of energy, the mouse will fall asleep."
+visible_characters = -1
+
+[node name="TextureButton" type="TextureButton" parent="Tutorials/Background/Tuto1"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 576.0
+margin/top = 13.0
+margin/right = 606.45
+margin/bottom = 43.45
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 16 )
+params/scale = Vector2( 0.15, 0.15 )
+
+[node name="Arrow" type="Sprite" parent="Tutorials/Background/Tuto1"]
+
+transform/pos = Vector2( -15.3067, -30.2175 )
+transform/rot = -53.8133
+transform/scale = Vector2( 1, 1 )
+texture = ExtResource( 17 )
+
+[node name="Tuto2" type="Panel" parent="Tutorials/Background"]
+
+visibility/visible = false
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 15 )
+margin/left = 280.0
+margin/top = 303.0
+margin/right = 122.0
+margin/bottom = 171.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Tutorials/Background/Tuto2"]
+
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 31.0
+margin/top = 26.0
+margin/right = 1205.0
+margin/bottom = 241.0
+bbcode/enabled = false
+bbcode/bbcode = "This is the jump button.\nTouch it and the mouse will jump."
+visible_characters = -1
+
+[node name="TextureButton" type="TextureButton" parent="Tutorials/Background/Tuto2"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 576.0
+margin/top = 13.0
+margin/right = 606.45
+margin/bottom = 43.45
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 16 )
+params/scale = Vector2( 0.15, 0.15 )
+
+[node name="Arrow" type="Sprite" parent="Tutorials/Background/Tuto2"]
+
+transform/pos = Vector2( 631.959, 163.404 )
+transform/rot = 122.759
+transform/scale = Vector2( 1, 1 )
+texture = ExtResource( 17 )
+
+[node name="Tuto3" type="Panel" parent="Tutorials/Background"]
+
+visibility/visible = false
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 15 )
+margin/left = 267.0
+margin/top = 299.0
+margin/right = 122.0
+margin/bottom = 173.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Tutorials/Background/Tuto3"]
+
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 31.0
+margin/top = 26.0
+margin/right = 1157.0
+margin/bottom = 239.0
+bbcode/enabled = false
+bbcode/bbcode = "Hold the jump button a bit longer to jump higher."
+visible_characters = -1
+
+[node name="TextureButton" type="TextureButton" parent="Tutorials/Background/Tuto3"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 591.0
+margin/top = 13.0
+margin/right = 621.45
+margin/bottom = 43.45
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 16 )
+params/scale = Vector2( 0.15, 0.15 )
+
+[node name="Arrow" type="Sprite" parent="Tutorials/Background/Tuto3"]
+
+transform/pos = Vector2( 645.237, 158.769 )
+transform/rot = 122.759
+transform/scale = Vector2( 1, 1 )
+texture = ExtResource( 17 )
+
+[node name="Tuto4" type="Panel" parent="Tutorials/Background"]
+
+visibility/visible = false
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 15 )
+margin/left = 150.0
+margin/top = 407.0
+margin/right = 785.0
+margin/bottom = 166.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Tutorials/Background/Tuto4"]
+
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 31.0
+margin/top = 26.0
+margin/right = 1157.0
+margin/bottom = 449.0
+bbcode/enabled = false
+bbcode/bbcode = "Maybe you missed one of those shiny coins and want to go back using the \"change direction\" button.\nBut keep an eye on your energy !"
+visible_characters = -1
+
+[node name="TextureButton" type="TextureButton" parent="Tutorials/Background/Tuto4"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 591.0
+margin/top = 13.0
+margin/right = 621.45
+margin/bottom = 43.45
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 16 )
+params/scale = Vector2( 0.15, 0.15 )
+
+[node name="Arrow" type="Sprite" parent="Tutorials/Background/Tuto4"]
+
+transform/pos = Vector2( -17.8241, 269 )
+transform/rot = 50.7451
+transform/scale = Vector2( 1, 1 )
+texture = ExtResource( 17 )
+
+[connection signal="body_enter" from="Tuto1" to="." method="show_tutorial" binds= [ "Tuto1" ]]
+
+[connection signal="body_enter" from="Tuto2" to="." method="show_tutorial" binds= [ "Tuto2" ]]
+
+[connection signal="body_enter" from="Tuto3" to="." method="show_tutorial" binds= [ "Tuto3" ]]
+
+[connection signal="body_enter" from="Tuto4" to="." method="show_tutorial" binds= [ "Tuto4" ]]
+
+[connection signal="pressed" from="Tutorials/Background/Tuto1/TextureButton" to="." method="hide_tutorial"]
+
+[connection signal="pressed" from="Tutorials/Background/Tuto2/TextureButton" to="." method="hide_tutorial"]
+
+[connection signal="pressed" from="Tutorials/Background/Tuto3/TextureButton" to="." method="hide_tutorial"]
+
+[connection signal="pressed" from="Tutorials/Background/Tuto4/TextureButton" to="." method="hide_tutorial"]
 
 

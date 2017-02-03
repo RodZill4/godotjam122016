@@ -1202,7 +1202,7 @@ __meta__ = { "_edit_lock_":true }
 
 polygon = Vector2Array( -3320.21, 721.921, -3315.04, 267.638, -2096.74, 267.638, -1828.3, -971.316, 178.207, -1176.2, 464.079, -1176.2, 902.564, -1399.79, 1243.28, 319.261, 1248.44, 721.921 )
 uv = Vector2Array(  )
-color = Color( 0.613281, 0.330597, 0, 1 )
+color = Color( 0.582031, 0.550592, 0.513824, 1 )
 vertex_colors = ColorArray(  )
 offset = Vector2( 0, 0 )
 texture/texture = ExtResource( 2 )

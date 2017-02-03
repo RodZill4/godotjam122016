@@ -14,16 +14,16 @@
 [ext_resource path="res://gfx/ui/setup_p.png" type="Texture" id=12]
 [ext_resource path="res://config_panel.tscn" type="PackedScene" id=13]
 
-[sub_resource type="Curve2D" id=2]
+[sub_resource type="Curve2D" id=1]
 
 bake_interval = 30.0
 _data = { "points":Vector2Array( 0, 0, 7.99603, -278.975, -658.603, 571.087, 0, 0, 0, 0, -202.29, 353.214, 0, 0, 206.408, 21.4079, 248.405, 417.536, -23.9037, 117.98, 26.547, -260.279, 591.584, 283.71, 101.933, -3.9205, -137.218, 4.90063, 263.248, 52.5703, 0, 0, -188.639, 9.06919, -238.831, 67.9164, -9.06919, 92.5057, 16.3245, -179.57, -506.625, -158.964, 0, 0, 76.1812, 32.6491, -283.463, -251.948, -244.868, -34.4629, 204.043, 14.546, 125.666, -47.3837, -91.4536, 64.9802, 150.417, -101.08, 471.566, -151.526, 43.3201, 31.2868, -89.047, -75.8102, 564.55, -385.845, 0, 0, -111.241, 112.978, 337.669, -300.3, 62.804, 25.6523, -122.804, -41.6914, 123.046, -198.556, 66.6669, 52.0002, -94.667, -76.0002, 44.4028, -449.799, 116.646, 44.9895, -72.0002, -30.6668, -446.033, -388.25, 0, 0, 0, 0, -498.034, -577.584 ) }
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=2]
 
 script/source = "tool\nextends Path2D\n\nexport(Texture) var texture = null setget set_texture\nexport(float) var width = 10 setget set_width\n\nfunc set_texture(t):\n\ttexture = t\n\tupdate()\n\nfunc set_width(w):\n\twidth = w\n\tupdate()\n\nfunc _ready():\n\tpass\n\nfunc _draw():\n\tvar points = get_curve().get_baked_points()\n\tvar texture_size = texture.get_size()\n\tvar uv_ratio = texture_size.y/(texture_size.x*width)\n\tvar p = []\n\tp.append(Vector2(0, 0))\n\tp.append(Vector2(0, 0))\n\tp.append(Vector2(0, 0))\n\tp.append(Vector2(0, 0))\n\tvar color = Color(1, 1, 1, get_opacity())\n\tvar colors = []\n\tcolors.append(color)\n\tcolors.append(color)\n\tcolors.append(color)\n\tcolors.append(color)\n\tvar uv = []\n\tuv.append(Vector2(0, 0))\n\tuv.append(Vector2(0, 1))\n\tuv.append(Vector2(0, 1))\n\tuv.append(Vector2(0, 0))\n\tfor i in range(points.size()-1):\n\t\tvar t = points[i+1]-points[i]\n\t\tvar n = 0.5*width*t.rotated(0.5*PI).normalized()\n\t\tp[2] = points[i] + n\n\t\tp[3] = points[i] - n\n\t\tif i > 0:\n\t\t\tvar uv_inc = uv_ratio * t.length()\n\t\t\tuv[2].x += uv_inc\n\t\t\tuv[3].x += uv_inc\n\t\t\tdraw_polygon(p, colors, uv, texture)\n\t\tp[0] = p[3]\n\t\tp[1] = p[2]\n\t\tuv[0] = uv[3]\n\t\tuv[1] = uv[2]\n\t\t"
 
-[sub_resource type="Curve2D" id=4]
+[sub_resource type="Curve2D" id=3]
 
 bake_interval = 5.0
 _data = { "points":Vector2Array( 0, 0, 13.5416, -268.751, 349.982, 411.489, -4.45384, 236.053, 0, 0, -201.801, 75.5655 ) }
@@ -71,12 +71,12 @@ transform/scale = Vector2( 0.75, 0.75 )
 transform/pos = Vector2( 0.590088, 1.82727 )
 transform/scale = Vector2( 29.195, 16.0899 )
 texture = ExtResource( 2 )
-modulate = Color( 0.265625, 1, 0, 1 )
+modulate = Color( 0.418568, 0.742188, 0.301514, 1 )
 
 [node name="Path" type="Path2D" parent="Center/Map1/Gfx"]
 
-curve = SubResource( 2 )
-script/script = SubResource( 3 )
+curve = SubResource( 1 )
+script/script = SubResource( 2 )
 texture = ExtResource( 3 )
 width = 30.0
 
@@ -332,8 +332,8 @@ visibility/visible = false
 visibility/opacity = 0.5
 transform/pos = Vector2( 5, -78 )
 transform/scale = Vector2( 0.75, 0.75 )
-curve = SubResource( 4 )
-script/script = SubResource( 3 )
+curve = SubResource( 3 )
+script/script = SubResource( 2 )
 texture = ExtResource( 3 )
 width = 30.0
 

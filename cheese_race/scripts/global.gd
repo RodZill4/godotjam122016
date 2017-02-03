@@ -34,7 +34,8 @@ func play_music(song, scalable = false, cont = false):
 	music.set_tempo_scale(1)
 	current_song = song
 	music_scalable = scalable
-	music.set_stream(load("res://music/"+song+".it"))
+	var stream = load("res://music/"+song+".it")
+	music.set_stream(stream)
 	music.set_loop(true)
 	music_scale = 1
 	music.play()

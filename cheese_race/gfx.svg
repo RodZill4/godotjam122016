@@ -3004,6 +3004,19 @@
          x="8458.0078"
          y="-432.98935" />
     </clipPath>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5667"
+       x="-0.012612236"
+       width="1.0252245"
+       y="-0.011444452"
+       height="1.0228889">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.200039"
+         id="feGaussianBlur5669" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3012,11 +3025,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.45254834"
-     inkscape:cx="-69.276751"
-     inkscape:cy="3437.0256"
+     inkscape:zoom="5.12"
+     inkscape:cx="2976.1944"
+     inkscape:cy="3552.2277"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g5674"
      showgrid="false"
      inkscape:window-width="1680"
      inkscape:window-height="987"
@@ -8801,6 +8814,18 @@
            y="0"
            x="0" />
       </g>
+    </g>
+    <g
+       id="g5674"
+       transform="translate(-0.12947513,-12.300137)">
+      <path
+         style="fill:#010c59;fill-opacity:1;fill-rule:evenodd;stroke:#a4b4ff;stroke-width:1.76805735px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="m 2813.6605,-2302.8035 -39.6319,22.6415 39.6319,22.6413 -2.9264,-13.451 54.795,13.451 -6.6505,-22.6413 6.6505,-22.6415 -54.795,13.451 z"
+         id="path5678"
+         inkscape:export-filename="gfx\ui\arrow.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>
